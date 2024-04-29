@@ -1,17 +1,18 @@
 from flask import Flask, jsonify, redirect, url_for
-from flask_limiter.util import get_remote_address
 from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from dotenv import dotenv_values
 from Helpers import Email as EmailHelper
 
 config = dotenv_values(".env")
 
 app = Flask(__name__)
+# Explicitly named parameters to avoid conflicts
 limiter = Limiter(
-    app,
+    app=app,
     key_func=get_remote_address,
     default_limits=["5000 per day", "50 per minute"],
-    storage_uri="memory://",
+    storage_uri="memory://"
 )
 
 mailbox = EmailHelper.Email()
